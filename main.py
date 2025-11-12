@@ -46,14 +46,14 @@ df_numeric=df.select_dtypes(include=['number'])
 
 #calculate mean,variance,minvalue,max_value,Q1,Q2,Q3
 mean=df_numeric.mean()
-variance=df_numeric.var()
+std=df_numeric.var()
 min_value=df_numeric.min()
 max_value=df_numeric.max()
 Q1=df_numeric.quantile(0.25)
 Q2=df_numeric.quantile(0.5)
 Q3=df_numeric.quantile(0.75)
 
-print('mean:\n',mean,'\n\nvariance:\n',variance,'\n\nmin_value\n',min_value,'\n\nmax_value\n',max_value,
+print('mean:\n',mean,'\n\nstandard deviation:\n',std,'\n\nmin_value\n',min_value,'\n\nmax_value\n',max_value,
       '\n\nQ1\n',Q1,'\n\nQ2\n',Q2,'\n\nQ3\n',Q3)
 
 
@@ -101,8 +101,8 @@ plt.title('after')
 
 
 
-variance_pastRemove=df_numeric.var()
-print('before Removing Outliers:\n\n',variance,'\n\nAfter Removing Outliers:\n\n',variance_pastRemove)
+std_pastRemove=df_numeric.std()
+print('before Removing Outliers:\n\n',std,'\n\nAfter Removing Outliers:\n\n',std_pastRemove)
 
 def CosineSimilarity(df):
    norms=norm(df.T,axis=1)
@@ -134,5 +134,7 @@ def create_missing_columns(count,rowCount):
             headers.pop(index)
         df =pd.concat([df,pd.DataFrame([sample])],ignore_index=True) 
 create_missing_columns(5,100)
+# get missing Data % 
 print('\n missing data % : \n',(df.isna().sum()/len(df.index))*100)
 plt.show()
+
