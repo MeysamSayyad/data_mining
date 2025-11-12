@@ -35,9 +35,9 @@ csv = 'supermarket_sales.csv'
 
 # read csv file
 df = pd.read_csv(csv)
-df['dateTime_Std']=df["Date"] + ' '+df['Time']
-df['dateTime_Std']=pd.to_datetime(df['dateTime_Std'],format='%m/%d/%Y %H:%M')
-df['dateTime_Std']=df['dateTime_Std']
+df['dateTime']=df["Date"] + ' '+df['Time']
+df['dateTime']=pd.to_datetime(df['dateTime'],format='%m/%d/%Y %H:%M')
+df['dateTime']=df['dateTime']
 
 
 # df['dateTime_Std']=(df['dateTime_Std']-df['dateTime_Std'].mean())/df['dateTime_Std'].std()
@@ -85,6 +85,7 @@ def Remove_outliers(df,Q1,Q3):
 outliers_Count_Series= pd.Series(CountOutliers(df_numeric,Q1=Q1,Q3=Q3))
 outliers_Count_Series=outliers_Count_Series.sort_values(ascending=False)
 Most_outliers=outliers_Count_Series[outliers_Count_Series.values == outliers_Count_Series.values[0]]
+# Tax 5%,Total,gross income,cogs have most outliers
 plt.figure() 
 df_numeric.boxplot(list(Most_outliers.keys()))
 plt.title('before')
@@ -93,7 +94,7 @@ df_numeric=Remove_outliers(df_numeric,Q1=Q1,Q3=Q3)
 
 
 
-# Tax 5%,Total,gross income,cogs has most outliers
+
 plt.figure()
 df_numeric.boxplot(list(Most_outliers.keys()))
 plt.title('after')
@@ -109,3 +110,22 @@ def CosineSimilarity(df):
    return (df.T @ df)/(norms[:,None] * norms[None,:])
 print(pd.DataFrame(CosineSimilarity(df_numeric),index=df_numeric.columns))
 
+
+
+# adding missing columns
+def create_missing_columns(count,rowCount):
+    global df
+    
+    for i in range(rowCount):
+        sample=df.iloc[0,::].to_dict()
+        headers=list(df)
+        for i in range(count):
+        
+            index=np.random.randint(0,len(headers))
+            
+            
+            sample.pop(headers[index],None)
+            headers.pop(index)
+        df =pd.concat([df,pd.DataFrame([sample])],ignore_index=True) 
+create_missing_columns(4,10)
+print(df.isna())
