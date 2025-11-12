@@ -99,17 +99,23 @@ plt.figure()
 df_numeric.boxplot(list(Most_outliers.keys()))
 plt.title('after')
 
-plt.show()
+
 
 variance_pastRemove=df_numeric.var()
 print('before Removing Outliers:\n\n',variance,'\n\nAfter Removing Outliers:\n\n',variance_pastRemove)
 
 def CosineSimilarity(df):
    norms=norm(df.T,axis=1)
-   print(norms[:,None]*norms[None,:])
+   
    return (df.T @ df)/(norms[:,None] * norms[None,:])
-print(pd.DataFrame(CosineSimilarity(df_numeric),index=df_numeric.columns))
+df_cosine=pd.DataFrame(CosineSimilarity(df_numeric),index=df_numeric.columns)
+for i in range(len(df_cosine.index)):
+    df_cosine.iloc[i,i]=0
+maxSim_first=df_cosine.max().sort_values(ascending=False).keys()[0]
+maxSim_second=df_cosine[maxSim_first].idxmax()
+plt.figure()
 
+df[[maxSim_first, maxSim_second]].plot.scatter('Total','Tax 5%')
 
 
 # adding missing columns
@@ -129,3 +135,4 @@ def create_missing_columns(count,rowCount):
         df =pd.concat([df,pd.DataFrame([sample])],ignore_index=True) 
 create_missing_columns(5,100)
 print('\n missing data % : \n',(df.isna().sum()/len(df.index))*100)
+plt.show()
