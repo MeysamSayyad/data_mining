@@ -127,5 +127,5 @@ def create_missing_columns(count,rowCount):
             sample.pop(headers[index],None)
             headers.pop(index)
         df =pd.concat([df,pd.DataFrame([sample])],ignore_index=True) 
-create_missing_columns(4,10)
-print(df.isna())
+create_missing_columns(5,100)
+print('\n missing data % : \n',(df.isna().sum()/len(df.index))*100)
