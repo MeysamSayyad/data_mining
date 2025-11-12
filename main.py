@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+from numpy.linalg import norm
 # arr = np.array([
 #     [
 #         [1,2,4,5]
@@ -52,34 +53,59 @@ Q1=df_numeric.quantile(0.25)
 Q2=df_numeric.quantile(0.5)
 Q3=df_numeric.quantile(0.75)
 
-# print('mean:\n',mean,'\n\nvariance:\n',variance,'\n\nmin_value\n',min_value,'\n\nmax_value\n',max_value,
-#       '\n\nQ1\n',Q1,'\n\nQ2\n',Q2,'\n\nQ3\n',Q3)
+print('mean:\n',mean,'\n\nvariance:\n',variance,'\n\nmin_value\n',min_value,'\n\nmax_value\n',max_value,
+      '\n\nQ1\n',Q1,'\n\nQ2\n',Q2,'\n\nQ3\n',Q3)
 
-outlier_Count= {}
-def Remove_outliers(df,Q1,Q3):
+
+def CountOutliers(df,Q1,Q3):
+    outlier_Count= {}
     for i in df:
         
         IQR=Q3[i]-Q1[i]
         lowerBound=Q1[i]-1.5*IQR
         upperBound=Q3[i]+ 1.5*IQR
         outlier_Count[i]=((df[i] < lowerBound) | (df[i]> upperBound)).sum()
-        df = df[(df[i] >= lowerBound) & (df[i]<= upperBound)]
+       
         
-      
-    return df
+    
+    return outlier_Count
+def Remove_outliers(df,Q1,Q3):
+    df_result =df.copy()
+    for i in df:
+        
+        IQR=Q3[i]-Q1[i]
+        lowerBound=Q1[i]-1.5*IQR
+        upperBound=Q3[i]+ 1.5*IQR
+        
+        df_result = df_result[(df_result[i] >= lowerBound) & (df_result[i]<= upperBound)]
+        
+        
+    
+    return df_result
+outliers_Count_Series= pd.Series(CountOutliers(df_numeric,Q1=Q1,Q3=Q3))
+outliers_Count_Series=outliers_Count_Series.sort_values(ascending=False)
+Most_outliers=outliers_Count_Series[outliers_Count_Series.values == outliers_Count_Series.values[0]]
 plt.figure() 
-df_numeric.boxplot('Tax 5%')
+df_numeric.boxplot(list(Most_outliers.keys()))
 plt.title('before')
 
 df_numeric=Remove_outliers(df_numeric,Q1=Q1,Q3=Q3)
-outliers_Count_Series= pd.Series(outlier_Count)
-outliers_Count_Series=outliers_Count_Series.sort_values(ascending=False)
-# Tax 5% has most outliers
+
+
+
+# Tax 5%,Total,gross income,cogs has most outliers
 plt.figure()
-df_numeric.boxplot('Tax 5%')
+df_numeric.boxplot(list(Most_outliers.keys()))
 plt.title('after')
 
 plt.show()
 
 variance_pastRemove=df_numeric.var()
 print('before Removing Outliers:\n\n',variance,'\n\nAfter Removing Outliers:\n\n',variance_pastRemove)
+
+def CosineSimilarity(df):
+   norms=norm(df.T,axis=1)
+   print(norms[:,None]*norms[None,:])
+   return (df.T @ df)/(norms[:,None] * norms[None,:])
+print(pd.DataFrame(CosineSimilarity(df_numeric),index=df_numeric.columns))
+
