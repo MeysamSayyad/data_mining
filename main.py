@@ -19,25 +19,25 @@ from numpy.linalg import norm
 # # print(arr.dtype)
 
 
-# height =[155,158,160,162,163,165,168,170,172,175,177,178,180,181,183]
+height =[155,158,160,162,163,165,168,170,172,175,177,178,180,181,183]
 
 
-# def computeZScore(arr,mean,var):
-#     retArr=[]
-#     for i in arr:
-#         retArr.append((i-mean)/var)
-#     return retArr
+def computeZScore(arr,mean,var):
+    retArr=[]
+    for i in arr:
+        retArr.append((i-mean)/var)
+    return retArr
 
-
+print(computeZScore(height,169.8,8.72))
 
 
 csv = 'supermarket_sales.csv'
 
 # read csv file
 df = pd.read_csv(csv)
-df['dateTime']=df["Date"] + ' '+df['Time']
-df['dateTime']=pd.to_datetime(df['dateTime'],format='%m/%d/%Y %H:%M')
-df['dateTime']=df['dateTime']
+# df['dateTime']=df["Date"] + ' '+df['Time']
+# df['dateTime']=pd.to_datetime(df['dateTime'],format='%m/%d/%Y %H:%M')
+# df['dateTime']=df['dateTime']
 
 
 # df['dateTime_Std']=(df['dateTime_Std']-df['dateTime_Std'].mean())/df['dateTime_Std'].std()
@@ -46,7 +46,7 @@ df_numeric=df.select_dtypes(include=['number'])
 
 #calculate mean,variance,minvalue,max_value,Q1,Q2,Q3
 mean=df_numeric.mean()
-std=df_numeric.var()
+std=df_numeric.std()
 min_value=df_numeric.min()
 max_value=df_numeric.max()
 Q1=df_numeric.quantile(0.25)
@@ -91,8 +91,8 @@ df_numeric.boxplot(list(Most_outliers.keys()))
 plt.title('before')
 
 df_numeric=Remove_outliers(df_numeric,Q1=Q1,Q3=Q3)
-
-
+std=df_numeric.std()
+print('\n\nstandard deviation(after deleting outliers):\n',std)
 
 
 plt.figure()
