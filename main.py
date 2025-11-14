@@ -104,18 +104,18 @@ plt.title('after')
 std_pastRemove=df_numeric.std()
 print('before Removing Outliers:\n\n',std,'\n\nAfter Removing Outliers:\n\n',std_pastRemove)
 
-def CosineSimilarity(df):
-   norms=norm(df.T,axis=1)
+# def CosineSimilarity(df):
+#    norms=norm(df.T,axis=1)
    
-   return (df.T @ df)/(norms[:,None] * norms[None,:])
-df_cosine=pd.DataFrame(CosineSimilarity(df_numeric),index=df_numeric.columns)
-for i in range(len(df_cosine.index)):
-    df_cosine.iloc[i,i]=0
-maxSim_first=df_cosine.max().sort_values(ascending=False).keys()[0]
-maxSim_second=df_cosine[maxSim_first].idxmax()
-plt.figure()
-
-df[[maxSim_first, maxSim_second]].plot.scatter('Total','Tax 5%')
+#    return (df.T @ df)/(norms[:,None] * norms[None,:])
+# df_cosine=pd.DataFrame(CosineSimilarity(df_numeric),index=df_numeric.columns)
+# for i in range(len(df_cosine.index)):
+#     df_cosine.iloc[i,i]=0
+# maxSim_first=df_cosine.max().sort_values(ascending=False).keys()[0]
+# maxSim_second=df_cosine[maxSim_first].idxmax()
+# plt.figure()
+# print(df_cosine)
+# df[[maxSim_first, maxSim_second]].plot.scatter('Total','Tax 5%')
 
 
 # adding missing columns
@@ -133,8 +133,26 @@ def create_missing_columns(count,rowCount):
             sample.pop(headers[index],None)
             headers.pop(index)
         df =pd.concat([df,pd.DataFrame([sample])],ignore_index=True) 
-create_missing_columns(5,100)
+create_missing_columns(8,100)
+df_numeric=df.select_dtypes(['number'])
 # get missing Data % 
 print('\n missing data % : \n',(df.isna().sum()/len(df.index))*100)
+#fill missing
+df_fillMean=df_numeric.copy()
+df_fillMedian=df_numeric.copy()
+df_fillMode=df_numeric.copy()
+# most frequent
+df_fillMode=df_fillMode.apply(lambda x:x.fillna(x.mode()[0]))
+print('Standard Deviation(most Frequent Fill)\n',df_fillMode.std())
+# Mean 
+df_fillMean=df_fillMean.apply(lambda x:x.fillna(x.mean()))
+print('Standard Deviation(Mean Fill)\n',df_fillMean.std())
+# median 
+df_fillMedian=df_fillMedian.fillna(Q2)
+print('Standard Deviation(Median Fill)\n',df_fillMedian.std())
+print(df_fillMedian)
 plt.show()
 
+#changing to nominal attributes Branch , City to Numeric
+df=pd.get_dummies(df,columns=['Branch','City'],dtype='int')
+df_changedTypes=df.loc[:,'Branch_A':'City_Yangon']
