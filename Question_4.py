@@ -30,7 +30,12 @@ def Remove_outliers(df,Q1,Q3):
     
     return df_result
 fig,axes=plt.subplots(1,2)
+df['dateTime']=df["Date"] + ' '+df['Time']
+df['dateTime']=pd.to_datetime(df['dateTime'],format='%m/%d/%Y %H:%M')
+# convert to timestamp
+df['dateTime']=df['dateTime'].astype('int64')//10**9
 df_numeric=df.select_dtypes(include=['number'])
+
 outliers_Count_Series= pd.Series(CountOutliers(df_numeric,Q1=Q1,Q3=Q3))
 outliers_Count_Series=outliers_Count_Series.sort_values(ascending=False)
 Most_outliers=outliers_Count_Series[outliers_Count_Series.values == outliers_Count_Series.values[0]]

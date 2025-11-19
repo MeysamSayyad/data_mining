@@ -8,6 +8,7 @@ df_select=df[['Branch','Product line']]
 #changing nominal attributes Branch , City to Numeric
 df_changedTypes=pd.get_dummies(df_select,dtype='int')
 
+print(df_changedTypes)
 cosine_sim=cosine_similarity(df_changedTypes)
 euclidean_sim=euclidean_distances(df_changedTypes)
 np.fill_diagonal(cosine_sim,0)
@@ -24,4 +25,4 @@ df_euclidean=pd.DataFrame(euclidean_sim_T,index=df_changedTypes.columns,columns=
 print('Cosine Similarity of two changed Attributes \n\n',df_cosine)
 print('\nEuclidean Similarity of two changed Attributes \n\n',df_euclidean)
 
-df_cosine.to_clipboard()
+df_euclidean.to_clipboard()
