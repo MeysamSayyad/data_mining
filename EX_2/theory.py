@@ -69,10 +69,44 @@ print((df_Grades['Study hours per week(x1)-Norm ']*-df_Grades['Final score (out 
 print((df_Grades['Bedtime(x2)-Norm']*-df_Grades['Final score (out of 20)(y)']))
 print((df_Grades['Bedtime(x2)-Norm']*-df_Grades['Final score (out of 20)(y)']).sum())
 secondTry=1.465+ (df_Grades['Study hours per week(x1)-Norm ']*0.37693)+(df_Grades['Bedtime(x2)-Norm']*-0.32034)
-secondtry_diffrence=secondTry - df_Grades['Final score (out of 20)(y)']
-secondTry_multiply_x1=df_Grades['Study hours per week(x1)-Norm ']*secondtry_diffrence
-secondTry_multiply_x2=df_Grades['Bedtime(x2)-Norm']*secondtry_diffrence
-secondTry_multiply_1=(secondtry_diffrence.sum()*0.1)/20
-print((secondTry_multiply_x1.sum()*0.1)/20)
-print((secondTry_multiply_x2.sum()*0.1)/20)
-print(secondTry_multiply_1)
+SecondTry_diffrence=secondTry - df_Grades['Final score (out of 20)(y)']
+secondtry_multiply_x1=df_Grades['Study hours per week(x1)-Norm ']*SecondTry_diffrence
+secondtry_multiply_x2=df_Grades['Bedtime(x2)-Norm']*SecondTry_diffrence
+secondTry_result_1=(SecondTry_diffrence.sum()*0.1)/20
+print(secondTry)
+print(SecondTry_diffrence)
+print(secondTry_result_1)
+print((secondtry_multiply_x1.sum()*0.1)/20)
+print((secondtry_multiply_x2.sum()*0.1)/20)
+thetha_0=1.465-secondTry_result_1
+thetha_1=0.37693 -((secondtry_multiply_x1.sum()*0.1)/20)
+thetha_2=-0.32034-((secondtry_multiply_x2.sum()*0.1)/20)
+print('x0 second try result',thetha_0)
+print('x1 second try result',thetha_1)
+print('x2 second try result',thetha_2)
+
+
+
+thirdTry=thetha_0+ (df_Grades['Study hours per week(x1)-Norm ']* thetha_1)+(df_Grades['Bedtime(x2)-Norm']*thetha_2)
+thirdTry_diffrence=thirdTry - df_Grades['Final score (out of 20)(y)']
+thirdTry_multiply_x1=df_Grades['Study hours per week(x1)-Norm ']*thirdTry_diffrence
+thirdtry_multiply_x2=df_Grades['Bedtime(x2)-Norm']*thirdTry_diffrence
+thirdTry_result_1=(thirdTry_diffrence.sum()*0.1)/20
+print(thirdTry)
+print(thirdTry_diffrence)
+print(thirdTry_result_1)
+print((thirdTry_multiply_x1.sum()*0.1)/20)
+print((thirdtry_multiply_x2.sum()*0.1)/20)
+thetha_0=thetha_0-thirdTry_result_1
+thetha_1=thetha_1 -((thirdTry_multiply_x1.sum()*0.1)/20)
+thetha_2=thetha_2-((thirdtry_multiply_x2.sum()*0.1)/20)
+print('x0 third try result',thetha_0)
+print('x1 third try result',thetha_1)
+print('x2 third try result',thetha_2)
+
+final_h=thetha_0+ (df_Grades['Study hours per week(x1)-Norm ']* thetha_1)+(df_Grades['Bedtime(x2)-Norm']*thetha_2)
+print(final_h)
+final_diff_to2=(final_h-df_Grades['Final score (out of 20)(y)'])**2
+print(final_diff_to2)
+LossFunc=(final_diff_to2.sum())/40
+print('new Loss function',LossFunc)
