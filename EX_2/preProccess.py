@@ -1,14 +1,15 @@
 import pandas as pd
 import numpy as np
+
 csv = 'supermarket_sales.csv'
 
 
 # read csv file
 df = pd.read_csv(csv)
-df['dateTime']=df["Date"] + ' '+df['Time']
-df['dateTime']=pd.to_datetime(df['dateTime'],format='%m/%d/%Y %H:%M')
-# convert to timestamp
-df['dateTime']=df['dateTime'].astype('int64')//10**9
+# df['dateTime']=df["Date"] + ' '+df['Time']
+# df['dateTime']=pd.to_datetime(df['dateTime'],format='%m/%d/%Y %H:%M')
+# # convert to timestamp
+# df['dateTime']=df['dateTime'].astype('int64')//10**9
 df_numeric=df.select_dtypes(include=['number'])
 
 
@@ -54,6 +55,9 @@ def deletePerfectCorrelations(df):
     to_drop = [column for column in upper.columns if any(upper[column] > 0.95)]
     df.drop(to_drop,axis=1, inplace=True)
 deletePerfectCorrelations(df_Proccessed)
+
+
 df_Proccessed=df_Proccessed.reset_index(drop=True)
 df_clean=df.loc[df_Proccessed.index].copy()
+
 
