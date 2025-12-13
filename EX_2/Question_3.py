@@ -12,5 +12,5 @@ for col in df_clean.select_dtypes(include=['number']).columns:
 df_encoded=pd.get_dummies(df_clean)
 
 df_frequent=fpgrowth(df_encoded,min_support=sup,use_colnames=True)
-print('frequent Patterns - الگو های مکرر\n',df_frequent)
+print('frequent Patterns (FP-Growth) - الگو های مکرر\n',df_frequent)
 

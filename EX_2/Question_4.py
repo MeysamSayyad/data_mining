@@ -20,8 +20,23 @@ df_frequent=apriori(df_encoded,min_support=sup,use_colnames=True)
 end_Apriori=time.time()
 fp_Growth_time=end_fpGrowth-start_fpGrowth
 Apriori_time=end_Apriori-start_Apriori
+print('Min Support=',sup)
 print('\ntime spent for FP-Growth:',fp_Growth_time)
 print('\ntime spent for Apriori:',Apriori_time)
 print('\ntime Diffrence between two algorithms(Apriori-FP-Growth):',Apriori_time-fp_Growth_time)
 
-
+sup=0.1
+conf=0.75
+start_fpGrowth=time.time()
+df_frequent=fpgrowth(df_encoded,min_support=sup,use_colnames=True)
+end_fpGrowth=time.time()
+print('-'*50)
+start_Apriori=time.time()
+df_frequent=apriori(df_encoded,min_support=sup,use_colnames=True)
+end_Apriori=time.time()
+fp_Growth_time=end_fpGrowth-start_fpGrowth
+Apriori_time=end_Apriori-start_Apriori
+print('\nMin Support=',sup)
+print('\ntime spent for FP-Growth:',fp_Growth_time)
+print('\ntime spent for Apriori:',Apriori_time)
+print('\ntime Diffrence between two algorithms(Apriori-FP-Growth):',Apriori_time-fp_Growth_time)
